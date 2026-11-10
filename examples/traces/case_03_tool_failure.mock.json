@@ -1,0 +1,71 @@
+{
+  "run_id": "bdf7ea665665",
+  "timestamp": "2026-11-10T14:40:43",
+  "model": "mock-policy",
+  "mode": "mock",
+  "question": "单笔报销超过 5000 元需要谁审批？",
+  "history": [],
+  "limits": {
+    "max_steps": 8,
+    "max_tool_calls": 10
+  },
+  "steps": [
+    {
+      "step": 1,
+      "action": "search_docs",
+      "args": {
+        "query": "单笔报销超过 5000 元需要谁审批？"
+      },
+      "reason": "先用原问题检索知识库",
+      "ok": false,
+      "observation": "失败：search_docs 服务不可用（模拟故障：连接超时）",
+      "next_action": "search_docs"
+    },
+    {
+      "step": 2,
+      "action": "search_docs",
+      "args": {
+        "query": "单笔报销超过 5000 元需要谁审批？"
+      },
+      "reason": "检索工具返回失败，重试一次",
+      "ok": false,
+      "observation": "失败：search_docs 服务不可用（模拟故障：连接超时）",
+      "next_action": "final_answer"
+    },
+    {
+      "step": 3,
+      "action": "final_answer",
+      "reason": "工具重试后仍失败，如实返回失败状态，不凭记忆作答",
+      "args": {
+        "status": "tool_failure",
+        "citations": []
+      },
+      "ok": true,
+      "observation": "校验通过，结束",
+      "next_action": "结束"
+    }
+  ],
+  "result": {
+    "status": "tool_failure",
+    "answer": "知识库工具 search_docs 连续失败，本次无法查询制度原文，请稍后重试或联系 IT。",
+    "citations": [],
+    "conflicts": [],
+    "gaps": [
+      "search_docs 失败：search_docs 服务不可用（模拟故障：连接超时）"
+    ],
+    "clarifying_question": "",
+    "steps_used": 3,
+    "tool_calls_used": 2
+  },
+  "usage": {},
+  "duration_ms": 0,
+  "case_id": "case_03_tool_failure",
+  "scenario": "工具失败：检索服务持续不可用，应明确返回失败状态",
+  "fail_tools": [
+    "search_docs"
+  ],
+  "expectation_check": {
+    "passed": true,
+    "failures": []
+  }
+}

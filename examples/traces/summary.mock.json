@@ -1,0 +1,81 @@
+[
+  {
+    "case_id": "case_01_normal",
+    "status": "answered",
+    "passed": true,
+    "failures": [],
+    "steps": [
+      "search_docs",
+      "read_doc",
+      "final_answer"
+    ]
+  },
+  {
+    "case_id": "case_02_conflict",
+    "status": "conflict",
+    "passed": true,
+    "failures": [],
+    "steps": [
+      "search_docs",
+      "read_doc",
+      "read_doc",
+      "final_answer"
+    ]
+  },
+  {
+    "case_id": "case_03_tool_failure",
+    "status": "tool_failure",
+    "passed": true,
+    "failures": [],
+    "steps": [
+      "search_docs",
+      "search_docs",
+      "final_answer"
+    ]
+  },
+  {
+    "case_id": "case_04_out_of_scope",
+    "status": "insufficient",
+    "passed": true,
+    "failures": [],
+    "steps": [
+      "search_docs",
+      "search_docs",
+      "final_answer"
+    ]
+  },
+  {
+    "case_id": "case_05_paraphrase",
+    "status": "answered",
+    "passed": true,
+    "failures": [],
+    "steps": [
+      "search_docs",
+      "read_doc",
+      "final_answer"
+    ]
+  },
+  {
+    "case_id": "case_06_followup",
+    "status": "answered",
+    "passed": true,
+    "failures": [],
+    "steps": [
+      "search_docs",
+      "read_doc",
+      "final_answer"
+    ]
+  },
+  {
+    "case_id": "case_07_tool_recover",
+    "status": "answered",
+    "passed": true,
+    "failures": [],
+    "steps": [
+      "search_docs",
+      "search_docs",
+      "read_doc",
+      "final_answer"
+    ]
+  }
+]

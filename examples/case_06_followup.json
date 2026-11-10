@@ -1,0 +1,11 @@
+{
+  "id": "case_06_followup",
+  "scenario": "上下文追问：当前问题省略了主语“年假”，需结合上一轮对话",
+  "question": "那没休完的能留到明年用吗？",
+  "history": [
+    {"role": "user", "content": "员工工作满 3 年，年假有多少天？"},
+    {"role": "assistant", "content": "根据 D03《员工休假管理制度》（2025-01-01）：员工累计工作已满 1 年不满 10 年的，年休假（以下简称年假）5 天。"}
+  ],
+  "fail_tools": [],
+  "expect": {"status": "answered", "must_cite": ["D03"], "answer_contains": ["3 月 31 日"]}
+}

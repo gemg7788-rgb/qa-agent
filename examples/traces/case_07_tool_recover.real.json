@@ -1,0 +1,115 @@
+{
+  "run_id": "a5e792299cfb",
+  "timestamp": "2026-11-10T14:54:32",
+  "model": "deepseek-chat",
+  "mode": "real",
+  "question": "单笔报销超过 5000 元需要谁审批？",
+  "history": [],
+  "limits": {
+    "max_steps": 8,
+    "max_tool_calls": 10
+  },
+  "steps": [
+    {
+      "step": 1,
+      "action": "search_docs",
+      "args": {
+        "query": "单笔报销超过5000元审批权限"
+      },
+      "reason": "用户询问报销金额对应的审批人，先检索报销审批权限相关制度",
+      "ok": false,
+      "observation": "失败：search_docs 服务暂时不可用（模拟故障，剩余 0 次）",
+      "next_action": "search_docs"
+    },
+    {
+      "step": 1,
+      "action": "search_docs",
+      "args": {
+        "query": "费用报销审批流程 审批权限"
+      },
+      "reason": "用同义关键词补充检索报销审批流程文档",
+      "ok": true,
+      "observation": "命中 5 条：D01-04《员工费用报销管理制度》v2024-01-10 score=9.69；D01-01《员工费用报销管理制度》v2024-01-10 score=6.201；D02-02《关于加快报销单据流转的通知》v2025-06-01 score=4.918；D01-05《员工费用报销管理制度》v2024-01-10 score=4.704；D02-01《关于加快报销单据流转的通知》v2025-06-01 score=3.704",
+      "next_action": "read_doc"
+    },
+    {
+      "step": 2,
+      "action": "read_doc",
+      "args": {
+        "doc_id": "D01"
+      },
+      "reason": "命中片段显示 D01 第四条含 5000 元加签规则，需读原文核对完整表述",
+      "ok": true,
+      "observation": "读取 D01《员工费用报销管理制度》v2024-01-10，适用范围：全体员工，5 个片段",
+      "next_action": "read_doc"
+    },
+    {
+      "step": 2,
+      "action": "read_doc",
+      "args": {
+        "doc_id": "D02"
+      },
+      "reason": "D02 为较新的报销相关通知，需确认是否修改了审批权限规定",
+      "ok": true,
+      "observation": "读取 D02《关于加快报销单据流转的通知》v2025-06-01，适用范围：未注明，3 个片段",
+      "next_action": "final_answer"
+    },
+    {
+      "step": 3,
+      "action": "final_answer",
+      "reason": "D01 第四条明确规定了 5000 元以上报销的加签审批要求，D02 仅涉及提交时间与票据形式、未修改审批权限，故可给出明确答案。",
+      "args": {
+        "status": "answered",
+        "citations": [
+          "D01",
+          "D02"
+        ]
+      },
+      "ok": true,
+      "observation": "校验通过，结束",
+      "next_action": "结束"
+    }
+  ],
+  "result": {
+    "status": "answered",
+    "answer": "根据《员工费用报销管理制度》（财务部，2024-01-10，适用全体员工）第四条「审批流程」：报销申请先由**直属主管**审批；单笔金额**超过 5000 元**的，须**加签部门负责人**审批；之后由**财务部复核**后付款。\n\n也就是说，单笔超过 5000 元的报销需要三级流转：直属主管 → 部门负责人（加签）→ 财务部复核付款。\n\n补充提示：另有《关于加快报销单据流转的通知》（财务部，2025-06-01）只调整了提交时限（费用发生后 15 天内提交）和电子发票上传要求，未涉及审批权限，审批权限仍按上述制度执行。注意两份文件对提交期限的表述不同（制度为 30 天，通知为 15 天），如涉及提交时限请以最新通知为准或向财务部确认。",
+    "citations": [
+      {
+        "doc_id": "D01",
+        "chunk_id": "D01-04",
+        "title": "员工费用报销管理制度",
+        "version": "2024-01-10",
+        "quote": "报销申请由直属主管审批，单笔金额超过 5000 元的，须加签部门负责人审批，财务部复核后付款。"
+      },
+      {
+        "doc_id": "D02",
+        "chunk_id": "D02-01",
+        "title": "关于加快报销单据流转的通知",
+        "version": "2025-06-01",
+        "quote": "为缩短财务结账周期，现对报销单据的提交时间作出调整。"
+      }
+    ],
+    "conflicts": [],
+    "gaps": [],
+    "clarifying_question": "",
+    "steps_used": 3,
+    "tool_calls_used": 4
+  },
+  "usage": {
+    "prompt_tokens": 5926,
+    "completion_tokens": 754,
+    "total_tokens": 6680,
+    "prompt_cache_hit_tokens": 4608,
+    "prompt_cache_miss_tokens": 1318
+  },
+  "duration_ms": 11889,
+  "case_id": "case_07_tool_recover",
+  "scenario": "工具失败后恢复：检索首次失败、重试成功，与 case_03 形成不同决策路径",
+  "fail_tools": [
+    "search_docs:1"
+  ],
+  "expectation_check": {
+    "passed": true,
+    "failures": []
+  }
+}

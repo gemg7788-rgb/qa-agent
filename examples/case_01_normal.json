@@ -1,0 +1,8 @@
+{
+  "id": "case_01_normal",
+  "scenario": "正常问题：文档中有明确答案",
+  "question": "员工工作满 3 年，年假有多少天？",
+  "history": [],
+  "fail_tools": [],
+  "expect": {"status": "answered", "must_cite": ["D03"], "answer_contains": ["年假）5 天"]}
+}

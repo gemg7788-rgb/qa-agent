@@ -1,0 +1,99 @@
+{
+  "run_id": "97f21b22417c",
+  "timestamp": "2026-11-10T14:54:00",
+  "model": "deepseek-chat",
+  "mode": "real",
+  "question": "公司的股票期权怎么行权？",
+  "history": [],
+  "limits": {
+    "max_steps": 8,
+    "max_tool_calls": 10
+  },
+  "steps": [
+    {
+      "step": 1,
+      "action": "search_docs",
+      "args": {
+        "query": "股票期权 行权"
+      },
+      "reason": "用户询问股票期权如何行权，先检索相关制度文档",
+      "ok": true,
+      "observation": "无命中",
+      "next_action": "search_docs"
+    },
+    {
+      "step": 2,
+      "action": "search_docs",
+      "args": {
+        "query": "期权 激励 行权流程"
+      },
+      "reason": "首次检索无命中，换用同义词（激励、行权流程）补充检索",
+      "ok": true,
+      "observation": "命中 2 条：D01-01《员工费用报销管理制度》v2024-01-10 score=2.15；D01-04《员工费用报销管理制度》v2024-01-10 score=1.783",
+      "next_action": "search_docs"
+    },
+    {
+      "step": 2,
+      "action": "search_docs",
+      "args": {
+        "query": "股权激励 员工持股"
+      },
+      "reason": "同时尝试更宽泛的股权激励/员工持股说法，确认知识库是否有相关制度",
+      "ok": true,
+      "observation": "无命中",
+      "next_action": "search_docs"
+    },
+    {
+      "step": 3,
+      "action": "search_docs",
+      "args": {
+        "query": "期权授予 行权价格 归属 证券账户",
+        "top_k": 10
+      },
+      "reason": "前两次检索均无相关命中，最后换用期权专业术语（授予、行权价格、归属）确认知识库是否收录",
+      "ok": true,
+      "observation": "无命中",
+      "next_action": "final_answer"
+    },
+    {
+      "step": 4,
+      "action": "final_answer",
+      "reason": "三轮检索（含同义词与专业术语改写）均无相关文档命中，知识库无股票期权行权资料，按规则以 insufficient 结束并说明缺口。",
+      "args": {
+        "status": "insufficient",
+        "citations": []
+      },
+      "ok": true,
+      "observation": "校验通过，结束",
+      "next_action": "结束"
+    }
+  ],
+  "result": {
+    "status": "insufficient",
+    "answer": "抱歉，我在公司制度/FAQ 知识库中没有检索到任何关于股票期权（或股权激励、员工持股）的文档，因此无法给出行权流程的可靠答案。\n\n我先后用「股票期权 行权」「期权 激励 行权流程」「股权激励 员工持股」「期权授予 行权价格 归属 证券账户」等关键词检索，均无相关命中（唯一命中的是《员工费用报销管理制度》，与期权无关）。\n\n建议你通过以下途径确认：\n1. 向人力资源部（薪酬/股权激励负责人）索取期权授予协议与行权说明；\n2. 若公司有专门的股权激励管理办法或境外持股平台文件，请提供文档名称，我可以再帮你检索。\n\n在拿到正式文件前，请不要依据非官方渠道的说法操作行权。",
+    "citations": [],
+    "conflicts": [],
+    "gaps": [
+      "知识库中缺少股票期权/股权激励相关制度文档：无期权授予、归属（vesting）、行权价格、行权窗口期、行权操作流程、税务处理等任何内容",
+      "缺少期权计划的管理部门与办理入口信息（如人力资源部、券商/持股平台操作指引）"
+    ],
+    "clarifying_question": "你能否提供公司期权计划的具体名称或相关文件（如《股权激励管理办法》《期权授予协议》），以便我进一步检索？",
+    "steps_used": 4,
+    "tool_calls_used": 4
+  },
+  "usage": {
+    "prompt_tokens": 6537,
+    "completion_tokens": 801,
+    "total_tokens": 7338,
+    "prompt_cache_hit_tokens": 5630,
+    "prompt_cache_miss_tokens": 907
+  },
+  "duration_ms": 18372,
+  "case_id": "case_04_out_of_scope",
+  "scenario": "资料外问题：知识库没有相关内容，不能编造",
+  "fail_tools": [],
+  "expectation_check": {
+    "passed": true,
+    "failures": []
+  }
+}

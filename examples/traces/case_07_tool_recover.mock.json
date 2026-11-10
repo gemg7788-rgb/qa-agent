@@ -1,0 +1,90 @@
+{
+  "run_id": "aa0bfe7ce234",
+  "timestamp": "2026-11-10T14:40:43",
+  "model": "mock-policy",
+  "mode": "mock",
+  "question": "单笔报销超过 5000 元需要谁审批？",
+  "history": [],
+  "limits": {
+    "max_steps": 8,
+    "max_tool_calls": 10
+  },
+  "steps": [
+    {
+      "step": 1,
+      "action": "search_docs",
+      "args": {
+        "query": "单笔报销超过 5000 元需要谁审批？"
+      },
+      "reason": "先用原问题检索知识库",
+      "ok": false,
+      "observation": "失败：search_docs 服务暂时不可用（模拟故障，剩余 0 次）",
+      "next_action": "search_docs"
+    },
+    {
+      "step": 2,
+      "action": "search_docs",
+      "args": {
+        "query": "单笔报销超过 5000 元需要谁审批？"
+      },
+      "reason": "检索工具返回失败，重试一次",
+      "ok": true,
+      "observation": "命中 5 条：D01-04《员工费用报销管理制度》v2024-01-10 score=11.762；D02-02《关于加快报销单据流转的通知》v2025-06-01 score=4.042；D01-05《员工费用报销管理制度》v2024-01-10 score=3.959；D02-01《关于加快报销单据流转的通知》v2025-06-01 score=3.704；D02-03《关于加快报销单据流转的通知》v2025-06-01 score=2.845",
+      "next_action": "read_doc"
+    },
+    {
+      "step": 3,
+      "action": "read_doc",
+      "args": {
+        "doc_id": "D01"
+      },
+      "reason": "检索到相关片段，读取原文核对",
+      "ok": true,
+      "observation": "读取 D01《员工费用报销管理制度》v2024-01-10，适用范围：全体员工，5 个片段",
+      "next_action": "final_answer"
+    },
+    {
+      "step": 4,
+      "action": "final_answer",
+      "reason": "已读原文且无冲突，依据最相关片段作答",
+      "args": {
+        "status": "answered",
+        "citations": [
+          "D01"
+        ]
+      },
+      "ok": true,
+      "observation": "校验通过，结束",
+      "next_action": "结束"
+    }
+  ],
+  "result": {
+    "status": "answered",
+    "answer": "根据 D01《员工费用报销管理制度》（2024-01-10）：报销申请由直属主管审批，单笔金额超过 5000 元的，须加签部门负责人审批，财务部复核后付款。",
+    "citations": [
+      {
+        "doc_id": "D01",
+        "chunk_id": "D01-04",
+        "title": "员工费用报销管理制度",
+        "version": "2024-01-10",
+        "quote": "报销申请由直属主管审批，单笔金额超过 5000 元的，须加签部门负责人审批，财务部复核后付款。"
+      }
+    ],
+    "conflicts": [],
+    "gaps": [],
+    "clarifying_question": "",
+    "steps_used": 4,
+    "tool_calls_used": 3
+  },
+  "usage": {},
+  "duration_ms": 1,
+  "case_id": "case_07_tool_recover",
+  "scenario": "工具失败后恢复：检索首次失败、重试成功，与 case_03 形成不同决策路径",
+  "fail_tools": [
+    "search_docs:1"
+  ],
+  "expectation_check": {
+    "passed": true,
+    "failures": []
+  }
+}

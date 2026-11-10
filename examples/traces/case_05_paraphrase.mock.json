@@ -1,0 +1,77 @@
+{
+  "run_id": "86a6aa175991",
+  "timestamp": "2026-11-10T14:40:43",
+  "model": "mock-policy",
+  "mode": "mock",
+  "question": "我工龄 12 年，一年能休几天带薪休假？",
+  "history": [],
+  "limits": {
+    "max_steps": 8,
+    "max_tool_calls": 10
+  },
+  "steps": [
+    {
+      "step": 1,
+      "action": "search_docs",
+      "args": {
+        "query": "我工龄 12 年，一年能休几天带薪休假？"
+      },
+      "reason": "先用原问题检索知识库",
+      "ok": true,
+      "observation": "命中 2 条：D03-01《员工休假管理制度》v2025-01-01 score=8.989；D03-03《员工休假管理制度》v2025-01-01 score=5.156",
+      "next_action": "read_doc"
+    },
+    {
+      "step": 2,
+      "action": "read_doc",
+      "args": {
+        "doc_id": "D03"
+      },
+      "reason": "检索到相关片段，读取原文核对",
+      "ok": true,
+      "observation": "读取 D03《员工休假管理制度》v2025-01-01，适用范围：全体正式员工，4 个片段",
+      "next_action": "final_answer"
+    },
+    {
+      "step": 3,
+      "action": "final_answer",
+      "reason": "已读原文且无冲突，依据最相关片段作答",
+      "args": {
+        "status": "answered",
+        "citations": [
+          "D03"
+        ]
+      },
+      "ok": true,
+      "observation": "校验通过，结束",
+      "next_action": "结束"
+    }
+  ],
+  "result": {
+    "status": "answered",
+    "answer": "根据 D03《员工休假管理制度》（2025-01-01）：员工累计工作已满 1 年不满 10 年的，年休假（以下简称年假）5 天；已满 10 年不满 20 年的，年假 10 天；已满 20 年的，年假 15 天。",
+    "citations": [
+      {
+        "doc_id": "D03",
+        "chunk_id": "D03-01",
+        "title": "员工休假管理制度",
+        "version": "2025-01-01",
+        "quote": "员工累计工作已满 1 年不满 10 年的，年休假（以下简称年假）5 天；已满 10 年不满 20 年的，年假 10 天；已满 20 年的，年假 15 天。"
+      }
+    ],
+    "conflicts": [],
+    "gaps": [],
+    "clarifying_question": "",
+    "steps_used": 3,
+    "tool_calls_used": 2
+  },
+  "usage": {},
+  "duration_ms": 0,
+  "case_id": "case_05_paraphrase",
+  "scenario": "相似问题：与 case_01 同义但换了说法（带薪休假 / 工龄），依然能检索到 D03",
+  "fail_tools": [],
+  "expectation_check": {
+    "passed": true,
+    "failures": []
+  }
+}

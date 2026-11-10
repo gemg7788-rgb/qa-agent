@@ -1,0 +1,8 @@
+{
+  "id": "case_04_out_of_scope",
+  "scenario": "资料外问题：知识库没有相关内容，不能编造",
+  "question": "公司的股票期权怎么行权？",
+  "history": [],
+  "fail_tools": [],
+  "expect": {"status": "insufficient"}
+}

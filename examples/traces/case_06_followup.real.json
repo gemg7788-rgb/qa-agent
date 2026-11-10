@@ -1,0 +1,93 @@
+{
+  "run_id": "8696130cb54a",
+  "timestamp": "2026-11-10T14:54:21",
+  "model": "deepseek-chat",
+  "mode": "real",
+  "question": "那没休完的能留到明年用吗？",
+  "history": [
+    {
+      "role": "user",
+      "content": "员工工作满 3 年，年假有多少天？"
+    },
+    {
+      "role": "assistant",
+      "content": "根据 D03《员工休假管理制度》（2025-01-01）：员工累计工作已满 1 年不满 10 年的，年休假（以下简称年假）5 天。"
+    }
+  ],
+  "limits": {
+    "max_steps": 8,
+    "max_tool_calls": 10
+  },
+  "steps": [
+    {
+      "step": 1,
+      "action": "search_docs",
+      "args": {
+        "query": "年假 未休完 结转 次年 跨年使用"
+      },
+      "reason": "用户追问年假未休完能否结转到明年，需检索年假结转/跨年使用规定",
+      "ok": true,
+      "observation": "命中 3 条：D03-02《员工休假管理制度》v2025-01-01 score=14.339；D03-01《员工休假管理制度》v2025-01-01 score=5.618；D03-03《员工休假管理制度》v2025-01-01 score=4.109",
+      "next_action": "read_doc"
+    },
+    {
+      "step": 2,
+      "action": "read_doc",
+      "args": {
+        "doc_id": "D03",
+        "chunk_id": "D03-02"
+      },
+      "reason": "需读取原文核对年假顺延条款的完整表述",
+      "ok": true,
+      "observation": "读取 D03《员工休假管理制度》v2025-01-01，适用范围：全体正式员工，1 个片段",
+      "next_action": "final_answer"
+    },
+    {
+      "step": 3,
+      "action": "final_answer",
+      "reason": "检索到 D03 第二条年假顺延条款并读取原文，内容明确无冲突，据此作答。",
+      "args": {
+        "status": "answered",
+        "citations": [
+          "D03"
+        ]
+      },
+      "ok": true,
+      "observation": "校验通过，结束",
+      "next_action": "结束"
+    }
+  ],
+  "result": {
+    "status": "answered",
+    "answer": "可以，但有期限。根据 D03《员工休假管理制度》（2025-01-01，人力资源部，适用全体正式员工）第二条：当年未休完的年假可顺延至次年 3 月 31 日前使用，逾期自动清零，且不折算工资。所以请务必在次年 3 月 31 日前休完，否则作废。",
+    "citations": [
+      {
+        "doc_id": "D03",
+        "chunk_id": "D03-02",
+        "title": "员工休假管理制度",
+        "version": "2025-01-01",
+        "quote": "当年未休完的年假可顺延至次年 3 月 31 日前使用，逾期自动清零，不折算工资。"
+      }
+    ],
+    "conflicts": [],
+    "gaps": [],
+    "clarifying_question": "",
+    "steps_used": 3,
+    "tool_calls_used": 2
+  },
+  "usage": {
+    "prompt_tokens": 5238,
+    "completion_tokens": 414,
+    "total_tokens": 5652,
+    "prompt_cache_hit_tokens": 4732,
+    "prompt_cache_miss_tokens": 506
+  },
+  "duration_ms": 9836,
+  "case_id": "case_06_followup",
+  "scenario": "上下文追问：当前问题省略了主语“年假”，需结合上一轮对话",
+  "fail_tools": [],
+  "expectation_check": {
+    "passed": true,
+    "failures": []
+  }
+}

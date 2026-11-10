@@ -1,0 +1,112 @@
+{
+  "run_id": "0f0fdac49144",
+  "timestamp": "2026-11-10T14:40:43",
+  "model": "mock-policy",
+  "mode": "mock",
+  "question": "报销期限多久？",
+  "history": [],
+  "limits": {
+    "max_steps": 8,
+    "max_tool_calls": 10
+  },
+  "steps": [
+    {
+      "step": 1,
+      "action": "search_docs",
+      "args": {
+        "query": "报销期限多久？"
+      },
+      "reason": "先用原问题检索知识库",
+      "ok": true,
+      "observation": "命中 5 条：D01-02《员工费用报销管理制度》v2024-01-10 score=9.202；D02-02《关于加快报销单据流转的通知》v2025-06-01 score=8.272；D02-01《关于加快报销单据流转的通知》v2025-06-01 score=6.931；D02-03《关于加快报销单据流转的通知》v2025-06-01 score=2.845；D01-01《员工费用报销管理制度》v2024-01-10 score=2.832",
+      "next_action": "read_doc"
+    },
+    {
+      "step": 2,
+      "action": "read_doc",
+      "args": {
+        "doc_id": "D01"
+      },
+      "reason": "检索到相关片段，读取原文核对",
+      "ok": true,
+      "observation": "读取 D01《员工费用报销管理制度》v2024-01-10，适用范围：全体员工，5 个片段",
+      "next_action": "read_doc"
+    },
+    {
+      "step": 3,
+      "action": "read_doc",
+      "args": {
+        "doc_id": "D02"
+      },
+      "reason": "还有文档 D02 也涉及该问题，读取比对是否一致",
+      "ok": true,
+      "observation": "读取 D02《关于加快报销单据流转的通知》v2025-06-01，适用范围：未注明，3 个片段",
+      "next_action": "final_answer"
+    },
+    {
+      "step": 4,
+      "action": "final_answer",
+      "reason": "多份文档对同一问题给出不同数值，且未说明优先级，按冲突处理",
+      "args": {
+        "status": "conflict",
+        "citations": [
+          "D01",
+          "D02"
+        ]
+      },
+      "ok": true,
+      "observation": "校验通过，结束",
+      "next_action": "结束"
+    }
+  ],
+  "result": {
+    "status": "conflict",
+    "answer": "文档之间存在冲突：D01《员工费用报销管理制度》（2024-01-10，适用范围：全体员工）规定“员工应在费用发生之日起 30 天内提交报销申请，逾期未提交的，原则上不予报销。”；D02《关于加快报销单据流转的通知》（2025-06-01，适用范围：未注明）规定“费用报销应在费用发生后 15 天内提交，请各部门督促员工及时整理票据。”。文档未说明适用范围或优先级，无法确定以哪份为准。",
+    "citations": [
+      {
+        "doc_id": "D01",
+        "chunk_id": "D01-02",
+        "title": "员工费用报销管理制度",
+        "version": "2024-01-10",
+        "quote": "员工应在费用发生之日起 30 天内提交报销申请，逾期未提交的，原则上不予报销。"
+      },
+      {
+        "doc_id": "D02",
+        "chunk_id": "D02-02",
+        "title": "关于加快报销单据流转的通知",
+        "version": "2025-06-01",
+        "quote": "费用报销应在费用发生后 15 天内提交，请各部门督促员工及时整理票据。"
+      }
+    ],
+    "conflicts": [
+      {
+        "topic": "报销期限多久？",
+        "claims": [
+          {
+            "doc_id": "D01",
+            "claim": "员工应在费用发生之日起 30 天内提交报销申请，逾期未提交的，原则上不予报销。"
+          },
+          {
+            "doc_id": "D02",
+            "claim": "费用报销应在费用发生后 15 天内提交，请各部门督促员工及时整理票据。"
+          }
+        ]
+      }
+    ],
+    "gaps": [
+      "文档之间的适用范围与优先级未说明"
+    ],
+    "clarifying_question": "请确认您适用哪份制度，或向财务部确认最新口径。",
+    "steps_used": 4,
+    "tool_calls_used": 3
+  },
+  "usage": {},
+  "duration_ms": 0,
+  "case_id": "case_02_conflict",
+  "scenario": "文档冲突：D01 写 30 天、D02 写 15 天，未说明适用范围与优先级",
+  "fail_tools": [],
+  "expectation_check": {
+    "passed": true,
+    "failures": []
+  }
+}

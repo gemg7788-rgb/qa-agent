@@ -1,0 +1,8 @@
+{
+  "id": "case_02_conflict",
+  "scenario": "文档冲突：D01 写 30 天、D02 写 15 天，未说明适用范围与优先级",
+  "question": "报销期限多久？",
+  "history": [],
+  "fail_tools": [],
+  "expect": {"status": "conflict", "must_cite": ["D01", "D02"]}
+}

@@ -1,0 +1,8 @@
+{
+  "id": "case_03_tool_failure",
+  "scenario": "工具失败：检索服务持续不可用，应明确返回失败状态",
+  "question": "单笔报销超过 5000 元需要谁审批？",
+  "history": [],
+  "fail_tools": ["search_docs"],
+  "expect": {"status": "tool_failure"}
+}
